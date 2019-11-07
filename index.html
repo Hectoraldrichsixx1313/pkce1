@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+
+</body>
+
+<script>
+
+
+  buttons.verifier.addEventListener('click', (event) => {
+    fetch('/verifier', { method: 'POST' }).then((response) => response.json()).then((data) => {
+      inputs.verifier.value = data.verifier;
+      inputs.challenger.value = '';
+    })
+  })
+
+
+  buttons.challenger.addEventListener('click', (event) => {
+    fetch('/challenger', { 
+      method: 'POST',
+      body: JSON.stringify({verifier: inputs.verifier.value}),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then((response) => response.json()).then((data) => {
+      if (data.error) {
+        alert('Verifier code is empty... Please Generate it first.')
+        return;
+      }
+      inputs.challenger.value = data.challenge;
+    })
+  })
+</script> 
+</html>
